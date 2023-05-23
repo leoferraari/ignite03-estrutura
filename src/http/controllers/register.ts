@@ -2,7 +2,7 @@ import { FastifyRequest, FastifyReply } from 'fastify'
 import { hash } from 'bcryptjs'
 import { z } from 'zod'
 import { prisma } from '@/lib/prisma'
-import { PrismaUsersRepository } from '@/repositories/prisma-users-repository'
+import PrismaUsersRepository from '@/repositories/prisma/prisma-users-repository'
 import { RegisterUserCase } from '@/use-cases/register'
 
 
