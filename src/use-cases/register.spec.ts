@@ -5,6 +5,9 @@ import { expect, describe, it } from 'vitest'
 import { UserAlreadyExistsError } from './errors/user-already-exists-error'
 import { RegisterUserCase } from './register'
 
+// skip para pular testes
+// only para testar um teste específico
+
 describe('Register Use Case', () => {
     it ('should be able to register', async () => {
         const usersRepository = new InMemoryUsersRepository()
@@ -51,7 +54,7 @@ describe('Register Use Case', () => {
             password: '123456',
         })
 
-        expect(() => 
+        await expect(() => 
             registerUseCase.execute({
                 name: 'John Doe',
                 email,
