@@ -30,7 +30,7 @@ describe('Get User Profile Use Case', () => {
 
     it ('should be able to get user profile with wrong id', async () => {
 
-        expect(() =>
+        await expect(() =>
             userProfileUseCase.execute({
                 userId: 'non-existing-id',
             }),
