@@ -44,7 +44,7 @@ describe('Check-in Use Case', () => {
             userLongitude: -49.6401091
         })
 
-        await expect(checkIn.id).toEqual(expect.any(String))
+        expect(checkIn.id).toEqual(expect.any(String))
     })
 
     it ('should not be able to check in twice in the same day', async () => {
