@@ -1,10 +1,7 @@
 import { FastifyRequest, FastifyReply } from 'fastify'
 import { z } from 'zod'
-import PrismaUsersRepository from '@/repositories/prisma/prisma-users-repository'
-import { AuthenticateUseCase } from '@/use-cases/authenticate'
 import { InvalidCredentialsError } from '@/use-cases/errors/invalid-credentials-error'
 import { makeAuthenticateUseCase } from '@/use-cases/factories/make-authenticate-use-case'
-import { triggerAsyncId } from 'async_hooks'
 
 export async function authenticate (request: FastifyRequest, reply: FastifyReply) {
     const authenticateBodySchema = z.object({
@@ -22,19 +19,29 @@ export async function authenticate (request: FastifyRequest, reply: FastifyReply
             password
         })
 
-        const token = await reply.jwtSign({}, {
-            sign: {
-                sub: user.id,
-            },
-        })
+        const token = await reply.jwtSign(
+            {
+                role: user.role
+            }, 
+            {
+                sign: {
+                    sub: user.id,
+                },
+            }
+        )
 
         // O usuário perde a autenticação se ficar 7 dias sem entrar na aplicação.
-        const refreshToken = await reply.jwtSign({}, {
-            sign: {
-                sub: user.id,
-                expiresIn: '7d'
+        const refreshToken = await reply.jwtSign(
+            {
+                role: user.role
             },
-        })
+            {
+                sign: {
+                    sub: user.id,
+                    expiresIn: '7d'
+                },
+            }
+        )
 
         return reply
             .setCookie('refreshToken', refreshToken, {
